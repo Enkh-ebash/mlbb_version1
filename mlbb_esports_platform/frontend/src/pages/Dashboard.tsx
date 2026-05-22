@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Users, Swords, Eye, TrendingUp, Zap, Star, ArrowUpRight, ArrowDownRight, Crown, Medal, Shield, Calendar } from 'lucide-react';
+import { Trophy, Users, Swords, Eye, Zap, Star, ArrowUpRight, ArrowDownRight, Shield, Calendar } from 'lucide-react';
 import { useLeaderboardStore, RANK_TIERS } from '../store';
 
 const mockActivityFeed = [
@@ -31,7 +31,7 @@ const mockMMRDistribution = [
 ];
 
 export default function Dashboard() {
-  const { topThree, trending, setTopThree, setTrending } = useLeaderboardStore();
+  const { trending, setTrending } = useLeaderboardStore();
   const [stats] = useState({
     totalPlayers: 128547,
     activeNow: 45231,
@@ -41,14 +41,47 @@ export default function Dashboard() {
   const [liveActivity] = useState(mockActivityFeed);
 
   useEffect(() => {
-    setTopThree([
-      { odyseeId: '1', username: 'DragonSlayer', avatar: '', rank: 1, mmr: 15680, rankTier: 'CELESTIAL', rankPoints: 680, region: 'Global', winRate: 68.5, totalMatches: 1520, trend: 'stable' },
-      { odyseeId: '2', username: 'PhoenixKing', avatar: '', rank: 2, mmr: 15420, rankTier: 'CELESTIAL', rankPoints: 420, region: 'Global', winRate: 66.2, totalMatches: 1480, trend: 'up' },
-      { odyseeId: '3', username: 'ShadowMaster', avatar: '', rank: 3, mmr: 15100, rankTier: 'TITAN', rankPoints: 100, region: 'Global', winRate: 64.8, totalMatches: 1390, trend: 'down' },
-    ]);
+    // setTopThree is unused in this Dashboard variant
     setTrending([
-      { odyseeId: '4', username: 'RisingStar', avatar: '', rank: 156, mmr: 8900, rankTier: 'MYTHICAL_HONOR', rankPoints: 900, region: 'Global', winRate: 58.2, totalMatches: 890, trend: 'up' },
-      { odyseeId: '5', username: 'StormBreaker', avatar: '', rank: 203, mmr: 8500, rankTier: 'MYTHICAL_SOVEREIGN', rankPoints: 500, region: 'Global', winRate: 57.5, totalMatches: 756, trend: 'up' },
+      {
+        odyseeId: '1',
+        username: 'DragonSlayer',
+        avatar: '',
+        rank: 1,
+        mmr: 15680,
+        rankTier: 'CELESTIAL',
+        rankPoints: 680,
+        region: 'Global',
+        winRate: 68.5,
+        totalMatches: 1520,
+        trend: 'stable',
+      },
+      {
+        odyseeId: '2',
+        username: 'PhoenixKing',
+        avatar: '',
+        rank: 2,
+        mmr: 15420,
+        rankTier: 'CELESTIAL',
+        rankPoints: 420,
+        region: 'Global',
+        winRate: 66.2,
+        totalMatches: 1480,
+        trend: 'up',
+      },
+      {
+        odyseeId: '3',
+        username: 'ShadowMaster',
+        avatar: '',
+        rank: 3,
+        mmr: 15100,
+        rankTier: 'TITAN',
+        rankPoints: 100,
+        region: 'Global',
+        winRate: 64.8,
+        totalMatches: 1390,
+        trend: 'down',
+      },
     ]);
   }, []);
 
@@ -208,7 +241,7 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-4">
-            {(trending.length > 0 ? trending : mockTrendingHeroes.slice(0, 3)).map((player, idx) => (
+            {((trending.length > 0 ? trending : mockTrendingHeroes.slice(0, 3)) as any[]).map((player, idx) => (
               <div
                 key={player.odyseeId || idx}
                 className="flex items-center gap-4 p-4 rounded-xl bg-[#0f0f1a]/50 hover:bg-[#0f0f1a] transition-colors group"
@@ -238,7 +271,7 @@ export default function Dashboard() {
                       {RANK_TIERS[player.rankTier as keyof typeof RANK_TIERS]?.name || player.rankTier}
                     </span>
                     <span>•</span>
-                    <span>{player.mmr} MMR</span>
+                      {player.picks} сонголт
                   </div>
                 </div>
                 <div className="text-right">

@@ -7,7 +7,7 @@ const regions = ['Global', 'Americas', 'Europe', 'Asia', 'SE Asia'];
 
 export default function Leaderboard() {
   const {
-    entries, topThree, selectedRegion, searchQuery, currentPage, totalPages, isLoading,
+    entries, topThree, selectedRegion, searchQuery, currentPage, totalPages,
     setEntries, setTopThree, setRegion, setSearch, setPage, setTotalPages, setLoading,
   } = useLeaderboardStore();
 

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Users, Trophy, Search, Plus, Star, Crown, Swords } from 'lucide-react';
-import { clanApi } from '../services/api';
-import { useAuthStore } from '../store';
+import { Users, Trophy, Search, Plus, Star, Crown, Swords } from 'lucide-react';
+
+
 
 const mockClans = [
   { clanId: 'c1', name: '凤凰崛起', tag: 'PHX', leaderName: 'ShadowStrike', members: [{ odyseeId: '1', username: 'ShadowStrike', role: 'Leader' }, { odyseeId: '2', username: 'IceQueen', role: 'Officer' }], memberCount: 28, averageMMR: 8450, wins: 156, losses: 44, region: 'Global', description: 'Элит competitive gaming community' },
@@ -12,16 +12,14 @@ const mockClans = [
 ];
 
 export default function Clans() {
-  const { user } = useAuthStore();
-  const [clans, setClans] = useState(mockClans);
+  const [clans] = useState(mockClans);
   const [search, setSearch] = useState('');
-  const [showCreate, setShowCreate] = useState(false);
 
   const filteredClans = clans.filter(
+
+
     c => c.name.toLowerCase().includes(search.toLowerCase()) || c.tag.toLowerCase().includes(search.toLowerCase())
   );
-
-  const winRates = clans.map(c => (c.wins / (c.wins + c.losses)) * 100);
 
   return (
     <div className="space-y-8">
@@ -51,7 +49,7 @@ export default function Clans() {
               className="cyber-input pl-10 w-64"
             />
           </div>
-          <button onClick={() => setShowCreate(true)} className="cyber-button flex items-center gap-2">
+          <button className="cyber-button flex items-center gap-2" type="button">
             <Plus size={20} />
             Клан Үүсгэх
           </button>

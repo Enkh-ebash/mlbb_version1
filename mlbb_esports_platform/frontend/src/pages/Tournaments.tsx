@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Trophy, Users, MapPin, Clock, Prize, ExternalLink } from 'lucide-react';
+import { Calendar, Trophy, Users, Clock } from 'lucide-react';
 import { tournamentApi } from '../services/api';
 
 const mockTournaments = [
@@ -48,18 +48,18 @@ const mockTournaments = [
 export default function Tournaments() {
   const [tournaments, setTournaments] = useState(mockTournaments);
   const [filter, setFilter] = useState('all');
-  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     const fetchTournaments = async () => {
-      setLoading(true);
+      // setLoading(true);
       try {
         const res = await tournamentApi.getAll({ status: filter === 'all' ? undefined : filter });
         setTournaments(res.data.tournaments || mockTournaments);
       } catch {
         setTournaments(mockTournaments);
       }
-      setLoading(false);
+      // setLoading(false);
     };
     fetchTournaments();
   }, [filter]);
@@ -131,7 +131,7 @@ export default function Tournaments() {
               <p className="text-gray-300 max-w-xl">{mockTournaments[0].description}</p>
               <div className="flex flex-wrap gap-4 mt-4">
                 <span className="flex items-center gap-2 text-sm text-gray-400">
-                  <Prize className="text-cyber-yellow" size={16} />
+                  <Trophy className="text-cyber-yellow" size={16} />
                   {mockTournaments[0].prizePool}
                 </span>
                 <span className="flex items-center gap-2 text-sm text-gray-400">

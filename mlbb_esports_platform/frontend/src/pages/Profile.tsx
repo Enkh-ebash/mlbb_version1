@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Trophy, Swords, TrendingUp, Award, Target, Clock, Edit2, Save, Camera } from 'lucide-react';
+import { Trophy, Swords, TrendingUp, Award, Target, Clock, Edit2, Save, Camera } from 'lucide-react';
 import { useAuthStore, RANK_TIERS } from '../store';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const mockStats = {
   totalMatches: 1247,
@@ -42,7 +42,7 @@ const mockRecentMatches = [
 ];
 
 export default function Profile() {
-  const { user, isAuthenticated } = useAuthStore();
+  const { user } = useAuthStore();
   const [editing, setEditing] = useState(false);
   const [profile, setProfile] = useState({
     username: user?.username || 'ProPlayer',
@@ -64,11 +64,7 @@ export default function Profile() {
 
   const tierInfo = RANK_TIERS[currentUser.rankTier as keyof typeof RANK_TIERS] || RANK_TIERS.WARRIOR;
 
-  const kdaData = [
-    { name: 'Kills', value: currentUser.stats.avgKDA.kills, fill: '#10B981' },
-    { name: 'Deaths', value: currentUser.stats.avgKDA.deaths, fill: '#EF4444' },
-    { name: 'Assists', value: currentUser.stats.avgKDA.assists, fill: '#3B82F6' },
-  ];
+
 
   return (
     <div className="space-y-8">
