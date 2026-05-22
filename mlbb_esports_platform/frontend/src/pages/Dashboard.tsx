@@ -4,8 +4,8 @@ import { Trophy, Users, Swords, Eye, Zap, Star, ArrowUpRight, ArrowDownRight, Sh
 import { useLeaderboardStore, RANK_TIERS } from '../store';
 
 const mockActivityFeed = [
-  { id: 1, type: 'match', user: 'DragonSlayer', action: ' won a ranked match', mmr: '+24', time: '2 min' },
-  { id: 2, type: 'rank', user: 'PhoenixKing', action: ' reached Mythic rank', mmr: '', time: '5 min' },
+  { id: 1, type: 'match', user: 'Drag', action: ' won a ranked match', mmr: '+24', time: '2 min' },
+  { id: 2, type: 'rank', user: 'Phoenx', action: ' reached Mythic rank', mmr: '', time: '5 min' },
   { id: 3, type: 'tournament', user: 'Team Mongolia', action: ' registered for tournament', mmr: '', time: '8 min' },
   { id: 4, type: 'match', user: 'ShadowStrike', action: ' died 15 times but got MVP', mmr: '+32', time: '12 min' },
   { id: 5, type: 'clan', user: 'Sky Warriors', action: ' reached Grandmaster rank', mmr: '', time: '15 min' },
@@ -46,7 +46,7 @@ export default function Dashboard() {
     setTrending([
       {
         odyseeId: '1',
-        username: 'DragonSlayer',
+        username: 'Dragon',
         avatar: '',
         rank: 1,
         mmr: 15680,
@@ -59,7 +59,7 @@ export default function Dashboard() {
       },
       {
         odyseeId: '2',
-        username: 'PhoenixKing',
+        username: 'Phoenix',
         avatar: '',
         rank: 2,
         mmr: 15420,
@@ -72,7 +72,7 @@ export default function Dashboard() {
       },
       {
         odyseeId: '3',
-        username: 'ShadowMaster',
+        username: 'Shadowwww',
         avatar: '',
         rank: 3,
         mmr: 15100,

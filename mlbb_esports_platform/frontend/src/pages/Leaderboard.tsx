@@ -29,7 +29,7 @@ export default function Leaderboard() {
 
   const mockLeaderboardData = Array.from({ length: 100 }, (_, i) => ({
     odyseeId: `player_${i + 1}`,
-    username: ['DragonSlayer', 'PhoenixKing', 'ShadowMaster', 'IceBreaker', 'FireStorm', 'ThunderGod', 'DarkWizard', 'LightKnight', 'StormBringer', 'FrostBite'][i % 10] + (i > 9 ? i : ''),
+    username: ['Dragon', 'Phoenix', 'Shadwww', 'IceB', 'FireS', 'ThunderGod', 'Wizard', 'LiKnight', 'StormBringer', 'FrostBite'][i % 10] + (i > 9 ? i : ''),
     avatar: '',
     rank: i + 1,
     mmr: 16000 - i * 35 + Math.floor(Math.random() * 30),
