@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бүртгүүлэх • MLBB Mongolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html"><img src="assets/logo.png" alt="MLBB Mongolia" class="logo"></a>
+            <nav class="main-nav">
+                <a href="index.html">Нүүр</a>
+                <a href="match-find.html">Дуэл</a>
+                <a href="scrims.html">Скрим</a>
+                <a href="tournaments.html">Тэмцээн</a>
+                <a href="clans.html">Баг</a>
+                <a href="profile.html">Профайл</a>
+                <a href="login.html">Нэвтрэх</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="max-width: 500px; margin: 4rem auto;">
+        <div class="card" style="padding: 2.5rem;">
+            <h1 style="text-align: center;">Бүртгүүлэх</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Шинэ тоглогчдыг угтаж байна!</p>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Хэрэглэгчийн нэр" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="И-мэйл">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="mlbbId" placeholder="MLBB ID">
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Утасны дугаар">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Нууц үг" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirm-password" placeholder="Нууц үг баталгаажуулах" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Бүртгүүлэх</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Бүртгэлтэй юу? <a href="login.html" style="color: var(--primary);">Нэвтрэх</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mlbbId = document.getElementById('mlbbId').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (!username || !password) {
+                showToast('Хэрэглэгчийн нэр болон нууц үгээ оруулна уу', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showToast('Нууц үг таарахгүй байна', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showToast('Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой', 'error');
+                return;
+            }
+            
+            try {
+                const result = await api.register({ username, password, email, mlbbId, phone });
+                if (result.success) {
+                    showToast('Амжилттай бүртгэгдлээ! Нэвтэрнэ үү.', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    showToast(result.error || 'Бүртгүүлэхэд алдаа гарлаа', 'error');
+                }
+            } catch (err) {
+                showToast('Сервертэй холбогдож чадсангүй', 'error');
+            }
+        });
+        
+        // Redirect if already logged in
+        if (api.isAuthenticated()) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

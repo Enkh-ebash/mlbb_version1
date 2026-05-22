@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скрим • MLBB Mongolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html"><img src="assets/logo.png" alt="MLBB Mongolia" class="logo"></a>
+            <nav class="main-nav">
+                <a href="index.html">Нүүр</a>
+                <a href="match-find.html">Дуэл</a>
+                <a href="scrims.html" class="active">Скрим</a>
+                <a href="tournaments.html">Тэмцээн</a>
+                <a href="clans.html">Баг</a>
+                <a href="profile.html">Профайл</a>
+                <a href="login.html" id="login-link">Нэвтрэх</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+            <!-- Create Scrim Card -->
+            <div class="card" style="flex: 1; min-width: 320px;">
+                <h2 style="text-align: center;">🤝 Скрим үүсгэх</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Багаа бүртгүүлж, өрсөлдөгч хайх</p>
+                
+                <form id="scrim-form">
+                    <div class="form-group">
+                        <label>🏷️ Багийн нэр</label>
+                        <select id="team-select" required>
+                            <option value="">Багаа сонгох</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>👥 Тоглогчдын тоо</label>
+                        <select id="player-count">
+                            <option value="5">5v5 (Стандарт)</option>
+                            <option value="3">3v3 (Түргэн)</option>
+                            <option value="2">2v2 (Дуэт)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📅 Цаг сонгох</label>
+                        <input type="datetime-local" id="scrim-time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎮 Тайлбар (заавал биш)</label>
+                        <textarea id="scrim-note" rows="2" placeholder="Жишээ: Практик скрим, MMR 1200+..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding: 1rem;">
+                        📢 Скрим хүсэлт илгээх
+                    </button>
+                </form>
+            </div>
+
+            <!-- Scrim Info Card -->
+            <div class="card" style="flex: 1; min-width: 320px;">
+                <h2 style="text-align: center;">⚡ Скрим хэрхэн ажилладаг?</h2>
+                <div style="margin-top: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center;">
+                        <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">1</div>
+                        <div>
+                            <h3>Багаа сонгох</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Таны баг эсвэл шинэ баг үүсгэх</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center;">
+                        <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">2</div>
+                        <div>
+                            <h3>Скрим хүсэлт илгээх</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Бусад багууд таны хүсэлтийг харна</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center;">
+                        <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</div>
+                        <div>
+                            <h3>Өрсөлдөгч олох</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Тохирох баг ирэхэд автоматаар мэдэгдэнэ</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">4</div>
+                        <div>
+                            <h3>Тоглох & Үр дүн</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Тоглоод үр дүнгээ бүртгүүлэх</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Scrims -->
+        <h2 style="margin: 3rem 0 1rem;">📢 Нээлттэй скрим хүсэлтүүд</h2>
+        <div id="open-scrims" class="tournament-grid">
+            <p style="text-align: center;">Ачаалж байна...</p>
+        </div>
+        
+        <!-- My Scrims -->
+        <h2 style="margin: 3rem 0 1rem;">👥 Миний скримүүд</h2>
+        <div id="my-scrims" class="tournament-grid">
+            <p style="text-align: center;">Ачаалж байна...</p>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check auth
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+        
+        const user = getCurrentUser();
+        updateNavbar();
+        
+        // Load user teams
+        async function loadUserTeams() {
+            try {
+                const teams = [
+                    { id: 1, name: 'Mongol Warriors', tag: 'MW', role: 'captain' },
+                    { id: 2, name: 'Dark Wolves', tag: 'DW', role: 'member' }
+                ];
+                
+                const select = document.getElementById('team-select');
+                select.innerHTML = '<option value="">Багаа сонгох</option>';
+                
+                teams.forEach(team => {
+                    select.innerHTML += `<option value="${team.id}">${team.name} [${team.tag}] ${team.role === 'captain' ? '(Ахлагч)' : ''}</option>`;
+                });
+                
+                if (teams.length === 0) {
+                    select.innerHTML = '<option value="">Баг байхгүй байна. Эхлээд баг үүсгэнэ үү.</option>';
+                    document.getElementById('scrim-form').querySelector('button').disabled = true;
+                }
+            } catch (err) {
+                console.error('Failed to load teams:', err);
+            }
+        }
+        
+        // Load open scrims
+        async function loadOpenScrims() {
+            try {
+                const scrims = [
+                    {
+                        id: 1,
+                        team: { name: 'Steppe Eagles', tag: 'SE', captain: 'EagleEye', mmr: 1450 },
+                        playerCount: 5,
+                        time: '2026-04-01T20:00',
+                        note: 'Мэргэжлийн түвшний скрим'
+                    },
+                    {
+                        id: 2,
+                        team: { name: 'Nomad Empire', tag: 'NE', captain: 'NomadLeader', mmr: 1320 },
+                        playerCount: 5,
+                        time: '2026-04-01T21:30',
+                        note: 'Практик скрим'
+                    },
+                    {
+                        id: 3,
+                        team: { name: 'Blue Sky', tag: 'BS', captain: 'SkyWalker', mmr: 1280 },
+                        playerCount: 3,
+                        time: '2026-04-02T19:00',
+                        note: '3v3 туршлага хуваалцах'
+                    }
+                ];
+                
+                const container = document.getElementById('open-scrims');
+                container.innerHTML = '';
+                
+                if (scrims.length === 0) {
+                    container.innerHTML = '<p style="text-align: center;">Нээлттэй скрим хүсэлт байхгүй байна</p>';
+                    return;
+                }
+                
+                scrims.forEach(scrim => {
+                    const playerCountText = scrim.playerCount === 5 ? '5v5' : scrim.playerCount === 3 ? '3v3' : '2v2';
+                    const timeFormatted = new Date(scrim.time).toLocaleString('mn-MN');
+                    
+                    container.innerHTML += `
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <h3>${scrim.team.name} [${scrim.team.tag}]</h3>
+                                    <p style="color: var(--text-muted);">👑 Ахлагч: ${scrim.team.captain}</p>
+                                </div>
+                                <span class="badge badge-warning">${playerCountText}</span>
+                            </div>
+                            <div style="margin: 1rem 0;">
+                                <p>📅 ${timeFormatted}</p>
+                                <p>🎮 ${scrim.note || 'Тайлбар байхгүй'}</p>
+                                <p>🏅 Багийн MMR: ${scrim.team.mmr}</p>
+                            </div>
+                            <button onclick="joinScrim('${scrim.id}')" class="btn btn-primary" style="width:100%;">Нэгдэх</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Failed to load scrims:', err);
+                document.getElementById('open-scrims').innerHTML = '<p style="text-align: center;">Ачаалахад алдаа гарлаа</p>';
+            }
+        }
+        
+        // Load my scrims
+        async function loadMyScrims() {
+            try {
+                const myScrims = [
+                    {
+                        id: 1,
+                        team: { name: 'Mongol Warriors', tag: 'MW' },
+                        opponent: { name: 'Steppe Eagles', tag: 'SE' },
+                        playerCount: 5,
+                        time: '2026-03-30T19:00',
+                        status: 'scheduled',
+                        note: 'Скрим тоглолт'
+                    }
+                ];
+                
+                const container = document.getElementById('my-scrims');
+                container.innerHTML = '';
+                
+                if (myScrims.length === 0) {
+                    container.innerHTML = '<p style="text-align: center;">Таны скрим байхгүй байна</p>';
+                    return;
+                }
+                
+                myScrims.forEach(scrim => {
+                    const statusText = {
+                        'scheduled': 'Хуваарьлагдсан',
+                        'in_progress': 'Явагдаж байна',
+                        'completed': 'Дууссан',
+                        'cancelled': 'Цуцлагдсан'
+                    }[scrim.status] || scrim.status;
+                    
+                    const statusClass = {
+                        'scheduled': 'badge-info',
+                        'in_progress': 'badge-warning',
+                        'completed': 'badge-success',
+                        'cancelled': 'badge-danger'
+                    }[scrim.status] || 'badge-info';
+                    
+                    const timeFormatted = new Date(scrim.time).toLocaleString('mn-MN');
+                    const playerCountText = scrim.playerCount === 5 ? '5v5' : scrim.playerCount === 3 ? '3v3' : '2v2';
+                    
+                    container.innerHTML += `
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <h3>${scrim.team.name} [${scrim.team.tag}] vs ${scrim.opponent.name} [${scrim.opponent.tag}]</h3>
+                                    <p style="color: var(--text-muted);">${playerCountText} • ${timeFormatted}</p>
+                                </div>
+                                <span class="badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <p>🎮 ${scrim.note || 'Тайлбар байхгүй'}</p>
+                            </div>
+                            ${scrim.status === 'scheduled' ? `
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <button onclick="cancelScrim('${scrim.id}')" class="btn btn-outline" style="flex:1;">Цуцлах</button>
+                                <button onclick="startScrim('${scrim.id}')" class="btn btn-primary" style="flex:1;">Эхлүүлэх</button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Failed to load my scrims:', err);
+                document.getElementById('my-scrims').innerHTML = '<p style="text-align: center;">Ачаалахад алдаа гарлаа</p>';
+            }
+        }
+        
+        // Create scrim
+        document.getElementById('scrim-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const teamId = document.getElementById('team-select').value;
+            const playerCount = document.getElementById('player-count').value;
+            const scrimTime = document.getElementById('scrim-time').value;
+            const note = document.getElementById('scrim-note').value;
+            
+            if (!teamId) {
+                showToast('Эхлээд багаа сонгоно уу', 'error');
+                return;
+            }
+            
+            if (!scrimTime) {
+                showToast('Цагаа сонгоно уу', 'error');
+                return;
+            }
+            
+            try {
+                // Here you would call API to create scrim
+                showToast('Скрим хүсэлт амжилттай илгээгдлээ!', 'success');
+                document.getElementById('scrim-form').reset();
+                
+                // Refresh lists
+                setTimeout(() => {
+                    loadOpenScrims();
+                    loadMyScrims();
+                }, 1000);
+            } catch (err) {
+                showToast('Скрим үүсгэхэд алдаа гарлаа', 'error');
+            }
+        });
+        
+        // Join scrim
+        window.joinScrim = (scrimId) => {
+            showToast('Скримд нэгдэх хүсэлт илгээгдлээ', 'success');
+        };
+        
+        // Cancel scrim
+        window.cancelScrim = (scrimId) => {
+            showToast('Скрим цуцлагдлаа', 'info');
+            loadMyScrims();
+        };
+        
+        // Start scrim
+        window.startScrim = (scrimId) => {
+            showToast('Скрим эхэллээ! Амжилт хүсье!', 'success');
+        };
+        
+        // Initial load
+        loadUserTeams();
+        loadOpenScrims();
+        loadMyScrims();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadOpenScrims();
+        }, 30000);
+    </script>
+</body>
+</html>

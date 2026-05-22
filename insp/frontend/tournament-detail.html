@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Тэмцээн • MLBB Mongolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html"><img src="assets/logo.png" alt="MLBB Mongolia" class="logo"></a>
+            <nav class="main-nav">
+                <a href="index.html">Нүүр</a>
+                <a href="match-find.html">Дуэл</a>
+                <a href="scrims.html">Скрим</a>
+                <a href="tournaments.html" class="active">Тэмцээн</a>
+                <a href="clans.html">Баг</a>
+                <a href="profile.html">Профайл</a>
+                <a href="login.html" id="login-link">Нэвтрэх</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div id="tournament-content">
+            <p style="text-align: center;">Ачаалж байна...</p>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tournamentId = urlParams.get('id');
+        
+        if (!tournamentId) {
+            window.location.href = 'tournaments.html';
+        }
+        
+        updateNavbar();
+        
+        async function loadTournament() {
+            try {
+                const tournament = await api.getTournamentById(tournamentId);
+                document.getElementById('page-title').innerText = `${tournament.name} • MLBB Mongolia`;
+                
+                const user = getCurrentUser();
+                
+                const statusText = {
+                    'draft': 'Ноорог',
+                    'registration': 'Бүртгэл нээлттэй',
+                    'in_progress': 'Явагдаж байна',
+                    'completed': 'Дууссан',
+                    'cancelled': 'Цуцлагдсан'
+                }[tournament.status] || tournament.status;
+                
+                const statusClass = {
+                    'draft': 'badge-info',
+                    'registration': 'badge-success',
+                    'in_progress': 'badge-warning',
+                    'completed': 'badge-info',
+                    'cancelled': 'badge-danger'
+                }[tournament.status] || 'badge-info';
+                
+                const content = document.getElementById('tournament-content');
+                content.innerHTML = `
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h1>${tournament.name}</h1>
+                                <p style="color: var(--text-muted); margin-top: 0.5rem;">${tournament.description || 'Тайлбар байхгүй'}</p>
+                            </div>
+                            <span class="badge ${statusClass}" style="font-size: 1rem; padding: 0.5rem 1rem;">${statusText}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(tournament.prize_pool)} ₮</div>
+                            <div class="stat-label">Шагнал</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${tournament.current_teams || 0}/${tournament.max_teams || 16}</div>
+                            <div class="stat-label">Баг</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatDate(tournament.start_date)}</div>
+                            <div class="stat-label">Эхлэх</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${tournament.format?.toUpperCase() || 'BO3'}</div>
+                            <div class="stat-label">Формат</div>
+                        </div>
+                    </div>
+                    
+                    ${tournament.status === 'registration' && user ? `
+                    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(6,182,212,0.1));">
+                        <h2>✅ Бүртгүүлэх</h2>
+                        <p>Тэмцээнд оролцохын тулд багаа бүртгүүлнэ үү</p>
+                        <button id="register-btn" class="btn btn-primary" style="margin-top: 1rem;">Тэмцээнд бүртгүүлэх</button>
+                    </div>
+                    ` : ''}
+                    
+                    <h2>📋 Бүртгэгдсэн багууд</h2>
+                    <div id="teams-list" class="tournament-grid" style="margin-bottom: 2rem;"></div>
+                    
+                    <h2>🏆 Сүлжээ</h2>
+                    <div id="bracket" class="card" style="min-height: 300px; overflow-x: auto;">
+                        ${tournament.bracket_structure ? `<pre style="color: var(--text);">${JSON.stringify(tournament.bracket_structure, null, 2)}</pre>` : 'Сүлжээ гараагүй байна'}
+                    </div>
+                `;
+                
+                // Load teams list
+                const teamsContainer = document.getElementById('teams-list');
+                if (teamsContainer && tournament.registrations) {
+                    teamsContainer.innerHTML = '';
+                    tournament.registrations.forEach(reg => {
+                        teamsContainer.innerHTML += `
+                            <div class="card">
+                                <h3>👥 ${reg.team?.name || 'Баг'}</h3>
+                                <p>🏷️ ${reg.team?.tag || ''}</p>
+                                <p>👑 Ахлагч: ${reg.team?.captain?.username || '-'}</p>
+                                <span class="badge ${reg.status === 'approved' ? 'badge-success' : 'badge-warning'}">
+                                    ${reg.status === 'approved' ? 'Батлагдсан' : 'Хүлээгдэж байна'}
+                                </span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                const registerBtn = document.getElementById('register-btn');
+                if (registerBtn) {
+                    registerBtn.addEventListener('click', async () => {
+                        showToast('Бүртгүүлэх функц удахгүй нэмэгдэнэ', 'info');
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load tournament:', err);
+                document.getElementById('tournament-content').innerHTML = '<p style="text-align: center;">Тэмцээн олдсонгүй</p>';
+            }
+        }
+        
+        loadTournament();
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Баг • MLBB Mongolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html"><img src="assets/logo.png" alt="MLBB Mongolia" class="logo"></a>
+            <nav class="main-nav">
+                <a href="index.html">Нүүр</a>
+                <a href="match-find.html">Дуэл</a>
+                <a href="scrims.html">Скрим</a>
+                <a href="tournaments.html">Тэмцээн</a>
+                <a href="clans.html" class="active">Баг</a>
+                <a href="profile.html">Профайл</a>
+                <a href="login.html" id="login-link">Нэвтрэх</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div id="team-content">
+            <p style="text-align: center;">Ачаалж байна...</p>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const teamId = urlParams.get('id');
+        
+        if (!teamId) {
+            window.location.href = 'clans.html';
+        }
+        
+        updateNavbar();
+        const user = getCurrentUser();
+        
+        async function loadTeam() {
+            try {
+                const team = {
+                    id: teamId,
+                    name: 'Mongol Warriors',
+                    tag: 'MW',
+                    logo: null,
+                    captain: { id: '1', username: 'ZolooGOD', mmr: 1650, ignot: 5000 },
+                    members: [
+                        { id: '2', username: 'BatHero', role: 'Jungle', mmr: 1520, joinedAt: '2026-01-15' },
+                        { id: '3', username: 'SaraaQueen', role: 'Mid', mmr: 1480, joinedAt: '2026-01-20' },
+                        { id: '4', username: 'DorjTank', role: 'Roam', mmr: 1410, joinedAt: '2026-02-01' },
+                        { id: '5', username: 'Temuujin', role: 'Gold', mmr: 1550, joinedAt: '2026-01-10' }
+                    ],
+                    totalPoints: 1250,
+                    tournamentWins: 3,
+                    rank: 1,
+                    createdAt: '2026-01-01',
+                    description: 'Монголын шилдэг MLBB баг. Бид хамтдаа ялалт байгуулахыг зорьдог!'
+                };
+                
+                document.getElementById('page-title').innerText = `${team.name} • MLBB Mongolia`;
+                
+                const isCaptain = user && team.captain.id === user.id;
+                const isMember = user && team.members.some(m => m.id === user.id);
+                
+                const content = document.getElementById('team-content');
+                content.innerHTML = `
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+                            <div style="width: 120px; height: 120px; background: var(--gradient); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">👥</span>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                                    <div>
+                                        <h1>${team.name}</h1>
+                                        <p style="color: var(--primary); font-size: 1.2rem;">[${team.tag}]</p>
+                                    </div>
+                                    <span class="badge badge-success" style="font-size: 1rem;">#${team.rank}</span>
+                                </div>
+                                <p style="margin-top: 1rem;">${team.description}</p>
+                                <div style="display: flex; gap: 2rem; margin-top: 1rem; flex-wrap: wrap;">
+                                    <div>
+                                        <span style="color: var(--text-muted);">🏆 Ялалт</span><br>
+                                        <strong>${team.tournamentWins}</strong>
+                                    </div>
+                                    <div>
+                                        <span style="color: var(--text-muted);">⭐ Оноо</span><br>
+                                        <strong>${team.totalPoints}</strong>
+                                    </div>
+                                    <div>
+                                        <span style="color: var(--text-muted);">👥 Гишүүд</span><br>
+                                        <strong>${team.members.length}</strong>
+                                    </div>
+                                    <div>
+                                        <span style="color: var(--text-muted);">📅 Үүсгэсэн</span><br>
+                                        <strong>${new Date(team.createdAt).toLocaleDateString('mn-MN')}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${!isMember && !isCaptain ? `
+                    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(6,182,212,0.1));">
+                        <h2>✅ Багт нэгдэх</h2>
+                        <p>${team.name} багт нэгдэж, хамтдаа тоглохыг хүсвэл нэгдэх хүсэлт илгээнэ үү</p>
+                        <button id="join-team-btn" class="btn btn-primary" style="margin-top: 1rem;">Нэгдэх хүсэлт илгээх</button>
+                    </div>
+                    ` : ''}
+                    
+                    ${isCaptain ? `
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <h2>⚙️ Багийн удирдлага</h2>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button id="edit-team-btn" class="btn btn-outline">✏️ Засах</button>
+                            <button id="invite-player-btn" class="btn btn-outline">👥 Тоглогч урих</button>
+                            <button id="manage-requests-btn" class="btn btn-outline">📋 Хүсэлтүүд</button>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <h2>👥 Багийн гишүүд (${team.members.length})</h2>
+                    <div id="members-list" class="tournament-grid" style="margin-bottom: 2rem;"></div>
+                    
+                    <h2>🏆 Багийн статистик</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${team.totalPoints}</div>
+                            <div class="stat-label">Нийт оноо</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${team.tournamentWins}</div>
+                            <div class="stat-label">Тэмцээний ялалт</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${team.members.reduce((sum, m) => sum + m.mmr, 0) / team.members.length}</div>
+                            <div class="stat-label">Дундаж MMR</div>
+                        </div>
+                    </div>
+                    
+                    <h2>📊 Сүүлийн тэмцээнүүд</h2>
+                    <div id="tournaments-list" class="tournament-grid"></div>
+                `;
+                
+                // Load members list
+                const membersContainer = document.getElementById('members-list');
+                if (membersContainer) {
+                    membersContainer.innerHTML = '';
+                    team.members.forEach(member => {
+                        const isCaptainHere = member.id === team.captain.id;
+                        membersContainer.innerHTML += `
+                            <div class="card">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <h3>${member.username}</h3>
+                                        <p style="color: var(--primary);">${member.role}</p>
+                                    </div>
+                                    ${isCaptainHere ? '<span class="badge badge-warning">Ахлагч</span>' : ''}
+                                </div>
+                                <div style="margin-top: 0.5rem;">
+                                    <p>🏅 MMR: ${member.mmr}</p>
+                                    <p>📅 ${new Date(member.joinedAt).toLocaleDateString('mn-MN')} нэгдсэн</p>
+                                </div>
+                                ${isCaptain && !isCaptainHere ? `
+                                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button onclick="promoteToCaptain('${member.id}')" class="btn btn-outline" style="flex:1; padding: 0.5rem;">Ахлагч болгох</button>
+                                    <button onclick="kickMember('${member.id}')" class="btn btn-outline" style="flex:1; padding: 0.5rem;">Хөөх</button>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                }
+                
+                // Load tournaments
+                const tournamentsContainer = document.getElementById('tournaments-list');
+                if (tournamentsContainer) {
+                    tournamentsContainer.innerHTML = `
+                        <div class="card">
+                            <h3>MLBB Mongolia Open Cup #5</h3>
+                            <p>🏆 3-р байр</p>
+                            <p>📅 2026.03.15</p>
+                        </div>
+                        <div class="card">
+                            <h3>Winter Championship 2026</h3>
+                            <p>🏆 1-р байр</p>
+                            <p>📅 2026.02.20</p>
+                        </div>
+                        <div class="card">
+                            <h3>Weekly Series #12</h3>
+                            <p>🏆 2-р байр</p>
+                            <p>📅 2026.02.05</p>
+                        </div>
+                    `;
+                }
+                
+                // Button handlers
+                const joinBtn = document.getElementById('join-team-btn');
+                if (joinBtn) {
+                    joinBtn.addEventListener('click', () => {
+                        showToast('Нэгдэх хүсэлт илгээгдлээ', 'success');
+                    });
+                }
+                
+                const editBtn = document.getElementById('edit-team-btn');
+                if (editBtn) {
+                    editBtn.addEventListener('click', () => {
+                        showToast('Баг засах функц удахгүй', 'info');
+                    });
+                }
+                
+                const inviteBtn = document.getElementById('invite-player-btn');
+                if (inviteBtn) {
+                    inviteBtn.addEventListener('click', () => {
+                        const playerId = prompt('Урих тоглогчийн ID эсвэл нэр:');
+                        if (playerId) {
+                            showToast(`Урилга ${playerId} руу илгээгдлээ`, 'success');
+                        }
+                    });
+                }
+                
+                const manageBtn = document.getElementById('manage-requests-btn');
+                if (manageBtn) {
+                    manageBtn.addEventListener('click', () => {
+                        showToast('Хүсэлтүүд функц удахгүй', 'info');
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load team:', err);
+                document.getElementById('team-content').innerHTML = '<p style="text-align: center;">Баг олдсонгүй</p>';
+            }
+        }
+        
+        window.promoteToCaptain = (memberId) => {
+            showToast('Ахлагчаар томилогдлоо', 'success');
+        };
+        
+        window.kickMember = (memberId) => {
+            if (confirm('Энэ гишүүнийг багаас хөөх үү?')) {
+                showToast('Гишүүн хасагдлаа', 'info');
+            }
+        };
+        
+        loadTeam();
+    </script>
+</body>
+</html>

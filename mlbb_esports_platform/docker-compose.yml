@@ -1,0 +1,204 @@
+version: '3.9'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      - auth-service
+      - matchmaking-service
+      - mmr-service
+      - leaderboard-service
+      - tournament-service
+      - clan-service
+      - analytics-service
+      - notification-service
+      - chat-service
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Authentication Service
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=7d
+      - MONGODB_URI=mongodb://mongodb:27017/auth_db
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Matchmaking Service
+  matchmaking-service:
+    build: ./services/matchmaking-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - MONGODB_URI=mongodb://mongodb:27017/matchmaking_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # MMR Calculation Service
+  mmr-service:
+    build: ./services/mmr-service
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=production
+      - PORT=3003
+      - MONGODB_URI=mongodb://mongodb:27017/mmr_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Leaderboard Service
+  leaderboard-service:
+    build: ./services/leaderboard-service
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+      - PORT=3004
+      - MONGODB_URI=mongodb://mongodb:27017/leaderboard_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Tournament Service
+  tournament-service:
+    build: ./services/tournament-service
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - PORT=3005
+      - MONGODB_URI=mongodb://mongodb:27017/tournament_db
+    depends_on:
+      - mongodb
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Clan Service
+  clan-service:
+    build: ./services/clan-service
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=production
+      - PORT=3006
+      - MONGODB_URI=mongodb://mongodb:27017/clan_db
+    depends_on:
+      - mongodb
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Analytics Service
+  analytics-service:
+    build: ./services/analytics-service
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=production
+      - PORT=3007
+      - MONGODB_URI=mongodb://mongodb:27017/analytics_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Notification Service
+  notification-service:
+    build: ./services/notification-service
+    ports:
+      - "3008:3008"
+    environment:
+      - NODE_ENV=production
+      - PORT=3008
+      - MONGODB_URI=mongodb://mongodb:27017/notification_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Chat Service
+  chat-service:
+    build: ./services/chat-service
+    ports:
+      - "3009:3009"
+    environment:
+      - NODE_ENV=production
+      - PORT=3009
+      - MONGODB_URI=mongodb://mongodb:27017/chat_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - esports-network
+    restart: unless-stopped
+
+networks:
+  esports-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:

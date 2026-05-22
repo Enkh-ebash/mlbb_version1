@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дуэл • MLBB Mongolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html"><img src="assets/logo.png" alt="MLBB Mongolia" class="logo"></a>
+            <nav class="main-nav">
+                <a href="index.html">Нүүр</a>
+                <a href="match-find.html" class="active">Дуэл</a>
+                <a href="scrims.html">Скрим</a>
+                <a href="tournaments.html">Тэмцээн</a>
+                <a href="clans.html">Баг</a>
+                <a href="profile.html">Профайл</a>
+                <a href="login.html" id="login-link">Нэвтрэх</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+            <!-- Create Match Card -->
+            <div class="card" style="flex: 1; min-width: 300px;">
+                <h2 style="text-align: center;">⚔️ Шинэ дуэл</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Өрсөлдөгч хайж эхлэх</p>
+                
+                <div id="match-status" style="display: none;">
+                    <div class="queue-status">
+                        <div class="queue-spinner"></div>
+                        <h3 id="match-status-text">Өрсөлдөгч хайж байна...</h3>
+                        <p style="color: var(--text-muted); margin-top: 0.5rem;">Тохирох өрсөлдөгч хүлээгдэж байна</p>
+                        <button id="cancel-search" class="btn btn-outline" style="margin-top: 1rem;">Цуцлах</button>
+                    </div>
+                </div>
+                
+                <form id="match-form" style="display: block;">
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 0.5rem;">🎲 Ставка (Ignot)</label>
+                        <input type="range" id="bet-slider" min="10" max="1000" step="10" value="100">
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                            <span>10</span>
+                            <span id="bet-value">100</span>
+                            <span>1000</span>
+                        </div>
+                        <input type="number" id="bet" value="100" min="10" max="1000" step="10" style="margin-top: 0.5rem;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 0.5rem;">🎮 Тоглолтын төрөл</label>
+                        <select id="queue-type">
+                            <option value="ranked">🏆 Ranked (MMR нөлөөлнө)</option>
+                            <option value="normal">⚡ Normal (Ставкаар)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="background: var(--bg-surface); border-radius: 12px; padding: 1rem; margin: 1rem 0;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>💎 Таны игнот:</span>
+                            <span id="user-ignot" style="color: var(--warning); font-weight: bold;">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                            <span>🏅 MMR:</span>
+                            <span id="user-mmr" style="color: var(--primary);">0</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="search-btn" class="btn btn-primary" style="width:100%; padding: 1.2rem;">
+                        🔍 Дуэл хайх
+                    </button>
+                </form>
+            </div>
+
+            <!-- Match Info Card -->
+            <div class="card" id="match-info" style="flex: 1; min-width: 300px; display: none;">
+                <h2 style="text-align: center;">🎮 Дуэл эхэллээ!</h2>
+                <div id="match-details" style="margin: 1.5rem 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-surface); border-radius: 12px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem;">👤</div>
+                            <div id="opponent-name" style="font-weight: bold;">-</div>
+                            <div id="opponent-mmr" style="font-size: 0.8rem; color: var(--text-muted);">MMR: -</div>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">VS</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem;">👤</div>
+                            <div id="player-name" style="font-weight: bold;">-</div>
+                            <div id="player-mmr" style="font-size: 0.8rem; color: var(--text-muted);">MMR: -</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>💰 Ставка:</strong> <span id="match-bet">0</span> ignot</p>
+                        <p><strong>📊 Төлөв:</strong> <span id="match-status-text-detail" class="badge badge-warning">Эхлэхэд бэлэн</span></p>
+                    </div>
+                </div>
+                
+                <div id="match-result-form" style="display: none; margin-top: 1.5rem;">
+                    <h3>📝 Үр дүн оруулах</h3>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>🏆 Ялагч:</label>
+                        <select id="winner-select" class="form-group" style="margin-top: 0.5rem;">
+                            <option value="">Сонгох</option>
+                            <option value="me">Би</option>
+                            <option value="opponent">Өрсөлдөгч</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>📎 Нотолгоо (скриншот/видео URL):</label>
+                        <input type="text" id="proof-url" placeholder="https://...">
+                    </div>
+                    <button id="submit-result" class="btn btn-primary" style="width:100%;">Үр дүн илгээх</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Matches -->
+        <h2 style="margin: 3rem 0 1rem;">📋 Нээлттэй дуэл хүсэлтүүд</h2>
+        <div id="open-matches" class="tournament-grid">
+            <p style="text-align: center;">Ачаалж байна...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentMatchId = null;
+        let currentOpponentId = null;
+        let currentMatchBet = null;
+        let isSearching = false;
+        let socket = null;
+        
+        // Check auth
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+        
+        const user = getCurrentUser();
+        if (user) {
+            document.getElementById('user-ignot').innerText = user.ignot || 1000;
+            document.getElementById('user-mmr').innerText = user.mmr || 1200;
+            document.getElementById('player-name').innerText = user.username;
+            document.getElementById('player-mmr').innerText = `MMR: ${user.mmr || 1200}`;
+        }
+        
+        updateNavbar();
+        
+        // Bet slider
+        const slider = document.getElementById('bet-slider');
+        const betInput = document.getElementById('bet');
+        const betValue = document.getElementById('bet-value');
+        
+        slider.addEventListener('input', () => {
+            betInput.value = slider.value;
+            betValue.innerText = slider.value;
+        });
+        
+        betInput.addEventListener('input', () => {
+            slider.value = betInput.value;
+            betValue.innerText = betInput.value;
+        });
+        
+        // Connect WebSocket
+        function connectSocket() {
+            socket = io('http://localhost:4000', {
+                transports: ['websocket'],
+                reconnection: true
+            });
+            
+            socket.on('connect', () => {
+                console.log('WebSocket connected');
+                socket.emit('auth', api.token);
+            });
+            
+            socket.on('match-found', (data) => {
+                console.log('Match found:', data);
+                isSearching = false;
+                currentMatchId = data.matchId;
+                currentOpponentId = data.opponent?.userId;
+                currentMatchBet = data.opponent?.betIgnot || parseInt(betInput.value);
+                
+                document.getElementById('match-status').style.display = 'none';
+                document.getElementById('match-info').style.display = 'block';
+                document.getElementById('opponent-name').innerText = data.opponent?.username || `Тоглогч ${data.opponent?.userId?.slice(0, 8)}`;
+                document.getElementById('opponent-mmr').innerHTML = `MMR: ${data.opponent?.mmr || '?'}`;
+                document.getElementById('match-bet').innerText = currentMatchBet;
+                document.getElementById('search-btn').disabled = false;
+                document.getElementById('search-btn').innerHTML = '🔍 Дуэл хайх';
+                
+                showToast('Өрсөлдөгч олдлоо! Дуэл эхэллээ', 'success');
+                
+                setTimeout(() => {
+                    if (currentMatchId) {
+                        document.getElementById('match-result-form').style.display = 'block';
+                        showToast('Тоглолт дууссан бол үр дүнг оруулна уу', 'info');
+                    }
+                }, 30000);
+            });
+            
+            socket.on('match-updated', (data) => {
+                console.log('Match updated:', data);
+                if (data.status === 'completed') {
+                    showToast(`Дуэл дууссан! Ялагч: ${data.winnerId === user.id ? 'Та' : 'Өрсөлдөгч'}`, 'info');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            });
+            
+            socket.on('matchmaking-status', (data) => {
+                document.getElementById('match-status-text').innerText = data.message;
+                if (data.status === 'cancelled') {
+                    isSearching = false;
+                    document.getElementById('match-status').style.display = 'none';
+                    document.getElementById('search-btn').disabled = false;
+                    document.getElementById('search-btn').innerHTML = '🔍 Дуэл хайх';
+                }
+            });
+            
+            socket.on('error', (data) => {
+                showToast(data.message || 'Алдаа гарлаа', 'error');
+                if (isSearching) {
+                    isSearching = false;
+                    document.getElementById('match-status').style.display = 'none';
+                    document.getElementById('search-btn').disabled = false;
+                    document.getElementById('search-btn').innerHTML = '🔍 Дуэл хайх';
+                }
+            });
+        }
+        
+        // Create match
+        document.getElementById('match-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (isSearching) {
+                showToast('Аль хэдийн дуэл хайж байна', 'error');
+                return;
+            }
+            
+            const bet = parseInt(betInput.value);
+            const userIgn = user.ignot || 1000;
+            
+            if (bet > userIgn) {
+                showToast(`Ignot хүрэлцэхгүй байна. Танд ${bet} ignot хэрэгтэй`, 'error');
+                return;
+            }
+            
+            try {
+                const result = await api.createMatch(bet);
+                if (result.success) {
+                    isSearching = true;
+                    document.getElementById('match-status').style.display = 'block';
+                    document.getElementById('search-btn').disabled = true;
+                    document.getElementById('search-btn').innerHTML = '⏳ Хайж байна...';
+                    
+                    if (!socket || !socket.connected) {
+                        connectSocket();
+                        setTimeout(() => {
+                            socket.emit('join-matchmaking', { betIgnot: bet, queueType: 'ranked' });
+                        }, 1000);
+                    } else {
+                        socket.emit('join-matchmaking', { betIgnot: bet, queueType: 'ranked' });
+                    }
+                } else {
+                    showToast(result.error || 'Дуэл үүсгэхэд алдаа гарлаа', 'error');
+                }
+            } catch (err) {
+                showToast(err.message || 'Сервертэй холбогдож чадсангүй', 'error');
+            }
+        });
+        
+        // Cancel search
+        document.getElementById('cancel-search').addEventListener('click', () => {
+            if (socket && socket.connected) {
+                socket.emit('cancel-matchmaking');
+            }
+            isSearching = false;
+            document.getElementById('match-status').style.display = 'none';
+            document.getElementById('search-btn').disabled = false;
+            document.getElementById('search-btn').innerHTML = '🔍 Дуэл хайх';
+        });
+        
+        // Submit result
+        document.getElementById('submit-result').addEventListener('click', async () => {
+            if (!currentMatchId) {
+                showToast('Идэвхтэй дуэл олдсонгүй', 'error');
+                return;
+            }
+            
+            const winnerSelect = document.getElementById('winner-select').value;
+            const proofUrl = document.getElementById('proof-url').value;
+            
+            let winnerId = null;
+            if (winnerSelect === 'me') {
+                winnerId = user.id;
+            } else if (winnerSelect === 'opponent') {
+                winnerId = currentOpponentId;
+            } else {
+                showToast('Ялагчаа сонгоно уу', 'error');
+                return;
+            }
+            
+            try {
+                const result = await api.submitMatchResult(currentMatchId, winnerId, proofUrl);
+                if (result.success) {
+                    showToast('Үр дүн амжилттай бүртгэгдлээ', 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showToast(result.error || 'Үр дүн бүртгэхэд алдаа гарлаа', 'error');
+                }
+            } catch (err) {
+                showToast(err.message || 'Сервертэй холбогдож чадсангүй', 'error');
+            }
+        });
+        
+        // Load open matches
+        async function loadOpenMatches() {
+            try {
+                const matches = await api.getOpenMatches();
+                const container = document.getElementById('open-matches');
+                container.innerHTML = '';
+                
+                if (!matches || matches.length === 0) {
+                    container.innerHTML = '<p style="text-align: center;">Нээлттэй дуэл байхгүй байна</p>';
+                    return;
+                }
+                
+                matches.forEach(match => {
+                    if (match.creator?.id !== user.id) {
+                        container.innerHTML += `
+                            <div class="card">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <h3>👤 ${match.creator?.username || 'Тоглогч'}</h3>
+                                        <p style="margin: 0.5rem 0;">💰 Ставка: ${match.betIgnot} ignot</p>
+                                        <p>🏅 MMR: ${match.creator?.mmr || 1200}</p>
+                                    </div>
+                                    <span class="badge badge-warning">Хүлээгдэж байна</span>
+                                </div>
+                                <button onclick="acceptMatch('${match.id}', ${match.betIgnot})" class="btn btn-primary" style="width:100%; margin-top: 1rem;">
+                                    Нэгдэх
+                                </button>
+                            </div>
+                        `;
+                    }
+                });
+            } catch (err) {
+                console.error('Failed to load matches:', err);
+                document.getElementById('open-matches').innerHTML = '<p style="text-align: center;">Ачаалахад алдаа гарлаа</p>';
+            }
+        }
+        
+        // Accept match
+        window.acceptMatch = async (matchId, bet) => {
+            const userIgn = user.ignot || 1000;
+            if (bet > userIgn) {
+                showToast(`Ignot хүрэлцэхгүй байна. Танд ${bet} ignot хэрэгтэй`, 'error');
+                return;
+            }
+            
+            try {
+                const result = await api.acceptMatch(matchId);
+                if (result.success) {
+                    showToast('Дуэлд амжилттай нэгдлээ', 'success');
+                    loadOpenMatches();
+                } else {
+                    showToast(result.error || 'Нэгдэхэд алдаа гарлаа', 'error');
+                }
+            } catch (err) {
+                showToast(err.message || 'Сервертэй холбогдож чадсангүй', 'error');
+            }
+        };
+        
+        // Initial load
+        loadOpenMatches();
+        setInterval(loadOpenMatches, 10000);
+        connectSocket();
+    </script>
+</body>
+</html>
