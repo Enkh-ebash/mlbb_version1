@@ -4,30 +4,31 @@ import { Trophy, Users, Swords, Eye, Zap, Star, ArrowUpRight, ArrowDownRight, Sh
 import { useLeaderboardStore, RANK_TIERS } from '../store';
 
 const mockActivityFeed = [
-  { id: 1, type: 'match', user: 'DragonSlayer', action: ' рангийн тоглолт яллаа', mmr: '+24', time: '2 мин' },
-  { id: 2, type: 'rank', user: 'PhoenixKing', action: ' Mythic рангт хүрлээ', mmr: '', time: '5 мин' },
-  { id: 3, type: 'tournament', user: 'Team Mongolia', action: ' Тэмцээнд бүртгүүллээ', mmr: '', time: '8 мин' },
-  { id: 4, type: 'match', user: 'ShadowStrike', action: ' 15 алдаж MVP боллоо', mmr: '+32', time: '12 мин' },
-  { id: 5, type: 'clan', user: 'Sky Warriors', action: ' Grandmaster рангт хүрлээ', mmr: '', time: '15 мин' },
+  { id: 1, type: 'match', user: 'DragonSlayer', action: ' won a ranked match', mmr: '+24', time: '2 min' },
+  { id: 2, type: 'rank', user: 'PhoenixKing', action: ' reached Mythic rank', mmr: '', time: '5 min' },
+  { id: 3, type: 'tournament', user: 'Team Mongolia', action: ' registered for tournament', mmr: '', time: '8 min' },
+  { id: 4, type: 'match', user: 'ShadowStrike', action: ' died 15 times but got MVP', mmr: '+32', time: '12 min' },
+  { id: 5, type: 'clan', user: 'Sky Warriors', action: ' reached Grandmaster rank', mmr: '', time: '15 min' },
 ];
 
 const mockTrendingHeroes = [
-  { name: 'Fanny', picks: 12540, winRate: 51.2, trend: 'up' },
-  { name: 'Ling', picks: 11230, winRate: 49.8, trend: 'up' },
-  { name: 'Joy', picks: 9870, winRate: 52.1, trend: 'up' },
-  { name: 'Hayabusa', picks: 8540, winRate: 48.5, trend: 'down' },
-  { name: 'Aamon', picks: 7230, winRate: 50.3, trend: 'stable' },
+  { name: 'Fredrin', picks: 12540, winRate: 51.2, trend: 'up', img: '/img/fredrin neo.jpg' },
+  { name: 'Ling', picks: 11230, winRate: 49.8, trend: 'up', img: '/img/ling neo.jpg' },
+  { name: 'Brody', picks: 9870, winRate: 52.1, trend: 'up', img: '/img/brody neo.jpg' },
+  { name: 'Pharsa', picks: 8540, winRate: 48.5, trend: 'down', img: '/img/pharsa neo.jpg' },
+  { name: 'Granger', picks: 7230, winRate: 50.3, trend: 'stable', img: '/img/granger leg.jpg' },
 ];
 
 const mockMMRDistribution = [
-  { tier: 'Warrior', count: 12500, color: '#8B5CF6' },
-  { tier: 'Elite', count: 10200, color: '#3B82F6' },
-  { tier: 'Master', count: 8500, color: '#06B6D4' },
-  { tier: 'Grandmaster', count: 6200, color: '#F59E0B' },
-  { tier: 'Epic', count: 4100, color: '#EF4444' },
-  { tier: 'Legend', count: 2800, color: '#EC4899' },
+  { tier: 'Warrior', count: 45000, color: '#6B7280' },
+  { tier: 'Elite', count: 32000, color: '#3B82F6' },
+  { tier: 'Master', count: 24000, color: '#06B6D4' },
+  { tier: 'Grandmaster', count: 15000, color: '#F59E0B' },
+  { tier: 'Epic', count: 8000, color: '#EF4444' },
+  { tier: 'Legend', count: 4000, color: '#EC4899' },
   { tier: 'Mythic', count: 1500, color: '#F97316' },
-  { tier: 'Mythical+', count: 320, color: '#7C3AED' },
+  { tier: 'Mythical Honor', count: 400, color: '#7C3AED' },
+  { tier: 'Mythical Glory', count: 100, color: '#DC2626' },
 ];
 
 export default function Dashboard() {
@@ -49,7 +50,7 @@ export default function Dashboard() {
         avatar: '',
         rank: 1,
         mmr: 15680,
-        rankTier: 'CELESTIAL',
+        rankTier: 'MYTHICAL_GLORY',
         rankPoints: 680,
         region: 'Global',
         winRate: 68.5,
@@ -62,7 +63,7 @@ export default function Dashboard() {
         avatar: '',
         rank: 2,
         mmr: 15420,
-        rankTier: 'CELESTIAL',
+        rankTier: 'MYTHICAL_GLORY',
         rankPoints: 420,
         region: 'Global',
         winRate: 66.2,
@@ -75,7 +76,7 @@ export default function Dashboard() {
         avatar: '',
         rank: 3,
         mmr: 15100,
-        rankTier: 'TITAN',
+        rankTier: 'MYTHICAL_GLORY',
         rankPoints: 100,
         region: 'Global',
         winRate: 64.8,
@@ -86,10 +87,10 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
-    { label: 'Нийт Тамирчид', value: stats.totalPlayers.toLocaleString(), icon: Users, color: 'from-cyber-purple to-cyber-blue', change: '+2.4%' },
-    { label: 'Одоо Тоглож Байна', value: stats.activeNow.toLocaleString(), icon: Eye, color: 'from-cyber-cyan to-cyber-green', change: '+12%' },
-    { label: 'Өнөөдрийн Тоглолт', value: stats.matchesToday.toLocaleString(), icon: Swords, color: 'from-cyber-orange to-cyber-red', change: '+8.1%' },
-    { label: 'Дундаж MMR', value: stats.avgMMR.toLocaleString(), icon: Trophy, color: 'from-cyber-yellow to-cyber-orange', change: '+0.8%' },
+    { label: 'Total Players', value: stats.totalPlayers.toLocaleString(), icon: Users, color: 'from-cyber-purple to-cyber-blue', change: '+2.4%' },
+    { label: 'Playing Now', value: stats.activeNow.toLocaleString(), icon: Eye, color: 'from-cyber-cyan to-cyber-green', change: '+12%' },
+    { label: 'Matches Today', value: stats.matchesToday.toLocaleString(), icon: Swords, color: 'from-cyber-orange to-cyber-red', change: '+8.1%' },
+    { label: 'Average MMR', value: stats.avgMMR.toLocaleString(), icon: Trophy, color: 'from-cyber-yellow to-cyber-orange', change: '+0.8%' },
   ];
 
   return (
@@ -98,18 +99,19 @@ export default function Dashboard() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl py-12 px-8"
+        className="relative overflow-hidden rounded-3xl py-12 px-8 min-h-[400px] flex items-center"
         style={{
-          background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(236, 72, 153, 0.15) 100%)',
+          background: 'linear-gradient(135deg, rgba(10, 10, 15, 0.85) 0%, rgba(10, 10, 15, 0.7) 50%, rgba(10, 10, 15, 0.85) 100%), url(/img/home.jpg) top/cover no-repeat',
           border: '1px solid rgba(139, 92, 246, 0.3)',
         }}
       >
-        <div className="absolute inset-0 opacity-20"
+        <div className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.15) 1px, transparent 1px)',
             backgroundSize: '50px 50px',
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyber-purple/20 via-transparent to-cyber-cyan/20" />
 
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="text-center lg:text-left">
@@ -119,21 +121,21 @@ export default function Dashboard() {
               className="font-orbitron text-3xl lg:text-4xl font-bold mb-4"
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-purple via-cyber-cyan to-cyber-pink">
-                👑 ШАГНАР ГЭДЭГ УНШИГЧА 🏆
+                👑 CHAMPION READER 🏆
               </span>
             </motion.h1>
             <p className="text-gray-300 text-lg max-w-xl">
-              Мянга мянган тамирчидтай уралдан, өөрийн хүчээ сориорой.
-              Рангийн тоглолтууд, лидерборд, MLBB esports-ийн хамгийн өндөр түвшинд.
+              Compete against thousands of players and prove your skills.
+              Ranked matches, leaderboards, at the highest level of MLBB esports.
             </p>
             <div className="flex flex-wrap gap-4 mt-6 justify-center lg:justify-start">
               <a href="/matchmaking" className="cyber-button flex items-center gap-2">
                 <Swords size={20} />
-                Тоглох
+                Play
               </a>
               <a href="/leaderboard" className="cyber-button-secondary flex items-center gap-2">
                 <Trophy size={20} />
-                Рангийн Хүснэгт
+                Rank Table
               </a>
             </div>
           </div>
@@ -181,7 +183,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-4 px-4 py-3 border-b border-cyber-purple/20">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyber-green animate-pulse" />
-            <span className="text-sm font-semibold text-cyber-green">🔥 ЖИВХ ҮЙЛДЭЛ</span>
+            <span className="text-sm font-semibold text-cyber-green">🔥 LIVE ACTIVITY</span>
           </div>
           <div className="flex-1 overflow-hidden">
             <div className="animate-marquee flex gap-8 whitespace-nowrap">
@@ -235,9 +237,9 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Star className="text-cyber-yellow" size={20} />
-              ⭐ ХАМГИЙН ИХ ӨСӨЛТТЭЙ ТАМИРЧИД
+              ⭐ TOP GROWING PLAYERS
             </h2>
-            <a href="/leaderboard" className="text-sm text-cyber-purple hover:underline">Бүгд →</a>
+            <a href="/leaderboard" className="text-sm text-cyber-purple hover:underline">View All →</a>
           </div>
 
           <div className="space-y-4">
@@ -271,12 +273,12 @@ export default function Dashboard() {
                       {RANK_TIERS[player.rankTier as keyof typeof RANK_TIERS]?.name || player.rankTier}
                     </span>
                     <span>•</span>
-                      {player.picks} сонголт
+                      {player.picks} picks
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold">{player.winRate}%</p>
-                  <p className="text-xs text-gray-500">Ялтат</p>
+                  <p className="text-xs text-gray-500">Win Rate</p>
                 </div>
                 {player.trend === 'up' ? <ArrowUpRight className="text-cyber-green" size={20} /> : null}
               </div>
@@ -292,7 +294,7 @@ export default function Dashboard() {
         >
           <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
             <Zap className="text-cyber-cyan" size={20} />
-            📊 Рангийн Т分布
+            📊 Rank Distribution
           </h2>
 
           <div className="space-y-3">
@@ -321,57 +323,30 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="cyber-card p-6"
         >
-          <h2 className="text-xl font-bold mb-6">🔥 Meta Герлиуд</h2>
+          <h2 className="text-xl font-bold mb-6">🔥 Meta Heroes</h2>
           <div className="space-y-4">
             {mockTrendingHeroes.map((hero) => (
               <div key={hero.name} className="flex items-center gap-4 p-3 rounded-xl bg-[#0f0f1a]/50">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyber-red to-cyber-orange flex items-center justify-center text-2xl">
-                  ⚔️
+                <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-cyber-red to-cyber-orange">
+                  {hero.img ? (
+                    <img src={hero.img} alt={hero.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl">⚔️</div>
+                  )}
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold">{hero.name}</p>
-                  <p className="text-sm text-gray-400">{hero.picks.toLocaleString()} сонголт</p>
+                  <p className="text-sm text-gray-400">{hero.picks.toLocaleString()} picks</p>
                 </div>
                 <div className="text-right">
                   <p className={`font-semibold ${hero.winRate >= 50 ? 'text-cyber-green' : 'text-cyber-red'}`}>
                     {hero.winRate}%
                   </p>
-                  <p className="text-xs text-gray-500">Ялтат</p>
+                  <p className="text-xs text-gray-500">Win Rate</p>
                 </div>
                 {hero.trend === 'up' ? <ArrowUpRight className="text-cyber-green" size={16} /> : <ArrowDownRight className="text-cyber-red" size={16} />}
               </div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Quick Links */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="cyber-card p-6"
-        >
-          <h2 className="text-xl font-bold mb-6">⚡ Түргэн Холбоосууд</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <a href="/matchmaking" className="p-6 rounded-xl bg-gradient-to-br from-cyber-purple/20 to-cyber-purple/5 border border-cyber-purple/30 hover:scale-105 transition-transform">
-              <Swords className="text-cyber-purple mb-2" size={32} />
-              <p className="font-bold">Рангийн тоглоом</p>
-              <p className="text-sm text-gray-400">Өөрийн хүчээ сориорой</p>
-            </a>
-            <a href="/tournaments" className="p-6 rounded-xl bg-gradient-to-br from-cyber-yellow/20 to-cyber-yellow/5 border border-cyber-yellow/30 hover:scale-105 transition-transform">
-              <Calendar className="text-cyber-yellow mb-2" size={32} />
-              <p className="font-bold">Тэмцээнүүд</p>
-              <p className="text-sm text-gray-400">Профессонал тэмцээн</p>
-            </a>
-            <a href="/clans" className="p-6 rounded-xl bg-gradient-to-br from-cyber-cyan/20 to-cyber-cyan/5 border border-cyber-cyan/30 hover:scale-105 transition-transform">
-              <Shield className="text-cyber-cyan mb-2" size={32} />
-              <p className="font-bold">Кланууд</p>
-              <p className="text-sm text-gray-400">Багтаа нэгдээрэй</p>
-            </a>
-            <a href="/profile" className="p-6 rounded-xl bg-gradient-to-br from-cyber-pink/20 to-cyber-pink/5 border border-cyber-pink/30 hover:scale-105 transition-transform">
-              <Users className="text-cyber-pink mb-2" size={32} />
-              <p className="font-bold">Миний Профайл</p>
-              <p className="text-sm text-gray-400">Статистик үзэх</p>
-            </a>
           </div>
         </motion.div>
       </div>

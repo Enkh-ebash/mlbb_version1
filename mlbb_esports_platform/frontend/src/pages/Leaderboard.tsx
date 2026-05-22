@@ -1,9 +1,22 @@
 import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Minus, Crown, Medal, Trophy, Target, Globe, Zap } from 'lucide-react';
-import { useLeaderboardStore, RANK_TIERS } from '../store';
+import { useLeaderboardStore, RANK_TIERS, RANK_ORDER } from '../store';
 
 const regions = ['Global', 'Americas', 'Europe', 'Asia', 'SE Asia'];
+
+// Helper to assign rank tier based on leaderboard position
+const getRankTierForPosition = (position: number): string => {
+  if (position <= 4) return 'MYTHICAL_GLORY';    // Top 4 - Highest
+  if (position <= 15) return 'MYTHICAL_HONOR';   // Positions 5-15
+  if (position <= 30) return 'MYTHIC';             // Positions 16-30
+  if (position <= 45) return 'LEGEND';             // Positions 31-45
+  if (position <= 60) return 'EPIC';              // Positions 46-60
+  if (position <= 75) return 'GRANDMASTER';       // Positions 61-75
+  if (position <= 85) return 'MASTER';              // Positions 76-85
+  if (position <= 93) return 'ELITE';               // Positions 86-93
+  return 'WARRIOR';                                // Positions 94-100 - Lowest
+};
 
 export default function Leaderboard() {
   const {
@@ -20,7 +33,7 @@ export default function Leaderboard() {
     avatar: '',
     rank: i + 1,
     mmr: 16000 - i * 35 + Math.floor(Math.random() * 30),
-    rankTier: Object.keys(RANK_TIERS)[Math.min(Math.floor(i / 12), 16)] as keyof typeof RANK_TIERS,
+    rankTier: getRankTierForPosition(i + 1),
     rankPoints: 1500 - i * 10,
     region: selectedRegion,
     winRate: 60 + Math.random() * 30,
@@ -67,10 +80,10 @@ export default function Leaderboard() {
         <div>
           <h1 className="font-orbitron text-3xl font-bold">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-yellow to-cyber-orange">
-              🏆 ЛИДЕРОБОРД
+              🏆 LEADERBOARD
             </span>
           </h1>
-          <p className="text-gray-400 mt-2">Цалингийн өөрчлөлт 30 секунд тутамд шинэчлэгдэнэ</p>
+          <p className="text-gray-400 mt-2">Rank changes update every 30 seconds</p>
         </div>
 
         <div className="flex items-center gap-4">
@@ -85,7 +98,7 @@ export default function Leaderboard() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
             <input
               type="text"
-              placeholder="Хайх..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               className="cyber-input pl-10"
@@ -94,7 +107,7 @@ export default function Leaderboard() {
 
           <button onClick={() => setCompareMode(!compareMode)} className={`cyber-button-secondary flex items-center gap-2 ${compareMode ? 'bg-cyber-purple/20' : ''}`}>
             <Target size={18} />
-            Харьцуулах
+            Compare
           </button>
         </div>
       </motion.div>
@@ -112,7 +125,7 @@ export default function Leaderboard() {
           <h2 className="text-center text-xl font-bold mb-8 flex items-center justify-center gap-3">
             <Trophy className="text-cyber-yellow" size={24} />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-yellow to-cyber-orange">
-              🥇 TOP 3 ПОДИУМ 🥇
+              🥇 TOP 3 PODIUM 🥇
             </span>
             <Trophy className="text-cyber-yellow" size={24} />
           </h2>
@@ -139,7 +152,7 @@ export default function Leaderboard() {
                 <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-br from-cyber-yellow via-cyber-orange to-cyber-yellow flex items-center justify-center" style={{ boxShadow: '0 0 60px rgba(234, 179, 8, 0.6)' }}>
                   <Crown size={64} className="text-white drop-shadow-lg" />
                 </div>
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-cyber-yellow text-black text-xs font-bold">#1 АНХИЛ</div>
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-cyber-yellow text-black text-xs font-bold">#1 CHAMPION</div>
               </motion.div>
               <div className="mt-4 text-center">
                 <p className="font-bold text-xl">{topThree[0]?.username || 'DragonSlayer'}</p>
@@ -173,7 +186,7 @@ export default function Leaderboard() {
       <AnimatePresence>
         {comparePlayers.length === 2 && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="cyber-card p-6">
-            <h3 className="font-bold flex items-center gap-2 mb-4"><Target className="text-cyber-purple" size={20} />Тамирчин Харьцуулалт</h3>
+            <h3 className="font-bold flex items-center gap-2 mb-4"><Target className="text-cyber-purple" size={20} />Player Comparison</h3>
             <div className="grid grid-cols-2 gap-8">
               {comparePlayers.map((id) => {
                 const player = entries.find(e => e.odyseeId === id);
@@ -185,7 +198,7 @@ export default function Leaderboard() {
                       <motion.div initial={{ width: 0 }} animate={{ width: `${(player.mmr / 17000) * 100}%` }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${RANK_TIERS[player.rankTier as keyof typeof RANK_TIERS]?.color}, ${RANK_TIERS[player.rankTier as keyof typeof RANK_TIERS]?.color}88)` }} />
                     </div>
                     <div className="flex justify-between text-sm text-gray-400">
-                      <span>Ялтат: {player.winRate}%</span><span>Тоглолт: {player.totalMatches}</span>
+                      <span>Win Rate: {player.winRate}%</span><span>Matches: {player.totalMatches}</span>
                     </div>
                   </div>
                 );
@@ -202,13 +215,13 @@ export default function Leaderboard() {
             <thead>
               <tr className="border-b border-cyber-purple/20">
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">#</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Тамирчин</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Ранг</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Player</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Rank</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">MMR</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Ялтат</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Тоглолт</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Чиг</th>
-                {compareMode && <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Харьцуулах</th>}
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Win Rate</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Matches</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Trend</th>
+                {compareMode && <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Compare</th>}
               </tr>
             </thead>
             <tbody>
@@ -277,12 +290,12 @@ export default function Leaderboard() {
             <button onClick={() => setPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} className="p-2 rounded-lg hover:bg-cyber-purple/20 disabled:opacity-50 disabled:cursor-not-allowed">
               <ChevronLeft size={20} />
             </button>
-            <span className="text-sm text-gray-400">Хуудас {currentPage} / {totalPages}</span>
+            <span className="text-sm text-gray-400">Page {currentPage} / {totalPages}</span>
             <button onClick={() => setPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} className="p-2 rounded-lg hover:bg-cyber-purple/20 disabled:opacity-50 disabled:cursor-not-allowed">
               <ChevronRight size={20} />
             </button>
           </div>
-          <span className="text-sm text-gray-400">{entries.length} тамирчин</span>
+          <span className="text-sm text-gray-400">{entries.length} players</span>
         </div>
       </motion.div>
     </div>

@@ -5,9 +5,9 @@ import { matchmakingApi } from '../services/api';
 import { useAuthStore } from '../store';
 
 const queueTypes = [
-  { id: 'RANKED_SOLO', name: 'Рангийн Ганцаараа', description: 'Өөрийн чадвараа сориорой', icon: '🎮' },
-  { id: 'RANKED_TEAM', name: 'Рангийн Багтай', description: 'Багтайгаа хамтдаа тоглоорой', icon: '👥' },
-  { id: 'CLASSIC', name: 'Классик', description: 'Энгийн тоглолт', icon: '🎯' },
+  { id: 'RANKED_SOLO', name: 'Ranked Solo', description: 'Prove your skills alone', icon: '🎮' },
+  { id: 'RANKED_TEAM', name: 'Ranked Team', description: 'Play with your team', icon: '👥' },
+  { id: 'CLASSIC', name: 'Classic', description: 'Casual match', icon: '🎯' },
 ];
 
 export default function Matchmaking() {
@@ -90,10 +90,10 @@ export default function Matchmaking() {
       >
         <h1 className="font-orbitron text-3xl font-bold mb-2">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-red to-cyber-orange">
-            ⚔️ МАТЧМЕЙКИНГ
+            ⚔️ MATCHMAKING
           </span>
         </h1>
-        <p className="text-gray-400">Өөрийн чадварт тохирсон дайраа хайгаарай</p>
+        <p className="text-gray-400">Find a match that suits your skill level</p>
       </motion.div>
 
       {!inQueue ? (
@@ -122,7 +122,7 @@ export default function Matchmaking() {
                     className="mt-4 flex items-center gap-2 text-cyber-purple"
                   >
                     <Zap size={16} />
-                    <span className="text-sm font-semibold">Сонгосон</span>
+                    <span className="text-sm font-semibold">Selected</span>
                   </motion.div>
                 )}
               </motion.div>
@@ -145,7 +145,7 @@ export default function Matchmaking() {
               }`}
             >
               <Play size={24} />
-              {selectedQueue ? 'ДАЙРАА ХАЙГААРАЙ' : 'ТОГЛООМ СОНГОРУУЛАА'}
+              {selectedQueue ? 'FIND MATCH' : 'SELECT A GAME MODE'}
             </motion.button>
           </motion.div>
         </>
@@ -174,26 +174,26 @@ export default function Matchmaking() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold mb-2">Дариа Хайж Байна...</h2>
+              <h2 className="text-2xl font-bold mb-2">Searching for Match...</h2>
               <p className="text-gray-400 mb-6">
-                Таны чадварт тохирсон дайраа хайж байна...
+                Looking for a match that suits your skill level...
               </p>
 
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="p-4 rounded-xl bg-[#0f0f1a]">
                   <Clock className="mx-auto text-cyber-cyan mb-2" size={24} />
                   <p className="text-2xl font-bold">{formatTime(queueTime)}</p>
-                  <p className="text-xs text-gray-500">Хугацаа</p>
+                  <p className="text-xs text-gray-500">Duration</p>
                 </div>
                 <div className="p-4 rounded-xl bg-[#0f0f1a]">
                   <Users className="mx-auto text-cyber-purple mb-2" size={24} />
                   <p className="text-2xl font-bold">{queuePosition}</p>
-                  <p className="text-xs text-gray-500">Давшсан</p>
+                  <p className="text-xs text-gray-500">Position</p>
                 </div>
                 <div className="p-4 rounded-xl bg-[#0f0f1a]">
                   <Zap className="mx-auto text-cyber-yellow mb-2" size={24} />
                   <p className="text-2xl font-bold">{user?.mmr || 1000}</p>
-                  <p className="text-xs text-gray-500">Таны MMR</p>
+                  <p className="text-xs text-gray-500">Your MMR</p>
                 </div>
               </div>
 
@@ -202,7 +202,7 @@ export default function Matchmaking() {
                 className="cyber-button-secondary flex items-center gap-2 mx-auto"
               >
                 <X size={20} />
-                ЦУЦЛАХ
+                LEAVE QUEUE
               </button>
             </motion.div>
           ) : (
@@ -220,9 +220,9 @@ export default function Matchmaking() {
                 <Swords size={40} />
               </motion.div>
 
-              <h2 className="text-2xl font-bold mb-2 text-cyber-green">🎉 ДАЙР ОЛДЛОО!</h2>
+              <h2 className="text-2xl font-bold mb-2 text-cyber-green">🎉 MATCH FOUND!</h2>
               <p className="text-gray-400 mb-6">
-                Тохирсон дайраа олдлоо. Зөвшөөрвөл тоглоом эхлэнэ!
+                A suitable match was found. The game will start if you accept!
               </p>
 
               <div className="flex gap-4 justify-center">
@@ -231,14 +231,14 @@ export default function Matchmaking() {
                   className="cyber-button flex items-center gap-2"
                 >
                   <Play size={20} />
-                  ЗӨВШӨӨРӨХ
+                  ACCEPT
                 </button>
                 <button
                   onClick={handleLeaveQueue}
                   className="cyber-button-secondary flex items-center gap-2"
                 >
                   <X size={20} />
-                  ТАТГАЛЗАХ
+                  DECLINE
                 </button>
               </div>
             </motion.div>
@@ -253,7 +253,7 @@ export default function Matchmaking() {
         transition={{ delay: 0.5 }}
         className="cyber-card p-6"
       >
-        <h2 className="text-xl font-bold mb-4">📡 Одоогийн Давтан Төлөв</h2>
+        <h2 className="text-xl font-bold mb-4">📡 Current Queue Status</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[
             { region: 'Global', players: 12453, queue: 'RANKED_SOLO' },
@@ -267,7 +267,7 @@ export default function Matchmaking() {
                 <span className="text-sm font-semibold">{status.region}</span>
               </div>
               <p className="text-2xl font-bold">{status.players.toLocaleString()}</p>
-              <p className="text-xs text-gray-500">давраа байгаа</p>
+              <p className="text-xs text-gray-500">in queue</p>
             </div>
           ))}
         </div>

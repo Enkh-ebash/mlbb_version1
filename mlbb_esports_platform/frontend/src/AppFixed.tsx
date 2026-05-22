@@ -13,15 +13,15 @@ function Heroes() {
   // Keep the existing simple filter UI but avoid heavy inline state pollution.
   const allHeroes = useMemo(
     () => [
-      { id: 1, name: 'Balmond', role: 'Tank', tier: 'B', winRate: 48.2, pickRate: 3200 },
+      { id: 1, name: 'Fredrin', role: 'Tank', tier: 'S', winRate: 52.8, pickRate: 7200, img: '/img/fredrin neo.jpg' },
       { id: 2, name: 'Tigreal', role: 'Tank', tier: 'A', winRate: 50.1, pickRate: 5400 },
       { id: 3, name: 'Akai', role: 'Tank', tier: 'A', winRate: 51.3, pickRate: 4800 },
       { id: 4, name: 'Franco', role: 'Tank', tier: 'B', winRate: 49.5, pickRate: 3800 },
-      { id: 5, name: 'Minotaur', role: 'Tank', tier: 'S', winRate: 52.8, pickRate: 7200, img: '/img/fredrin neo.jpg' },
+      { id: 5, name: 'Minotaur', role: 'Tank', tier: 'S', winRate: 52.8, pickRate: 7200 },
       { id: 6, name: 'Lolita', role: 'Tank', tier: 'A', winRate: 50.5, pickRate: 5100 },
       { id: 7, name: 'Grock', role: 'Tank', tier: 'A', winRate: 51.2, pickRate: 5600 },
       { id: 8, name: 'Ling', role: 'Assassin', tier: 'S', winRate: 56.8, pickRate: 11200, img: '/img/ling neo.jpg' },
-      { id: 9, name: 'Fanny', role: 'Assassin', tier: 'S', winRate: 56.8, pickRate: 12400 },
+      { id: 9, name: 'Granger', role: 'Assassin', tier: 'S', winRate: 56.8, pickRate: 12400, img: '/img/granger leg.jpg' },
       { id: 10, name: 'Pharsa', role: 'Mage', tier: 'A', winRate: 51.5, pickRate: 8600, img: '/img/pharsa neo.jpg' },
       { id: 11, name: 'Brody', role: 'Marksman', tier: 'A', winRate: 52.8, pickRate: 10500, img: '/img/brody neo.jpg' },
       { id: 12, name: 'Bruno', role: 'Marksman', tier: 'A', winRate: 51.7, pickRate: 6100 },

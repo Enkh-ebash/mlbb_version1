@@ -6,9 +6,9 @@ import { tournamentApi } from '../services/api';
 const mockTournaments = [
   {
     tournamentId: 't1',
-    name: 'MLBB Аялалын Лиг',
-    description: 'Дэлхий даяарын шилдэг багуудын уралдаан',
-    format: 'Давхар Уралдаан',
+    name: 'MLBB World League',
+    description: 'Competition of the best teams worldwide',
+    format: 'Double Elimination',
     status: 'Live',
     maxTeams: 16,
     registeredTeams: 14,
@@ -19,9 +19,9 @@ const mockTournaments = [
   },
   {
     tournamentId: 't2',
-    name: 'Хаврын Чempионшип',
-    description: 'Олон улсын тэмцээнд оролцох шалгаруулалт',
-    format: 'Ганц Уралдаан',
+    name: 'Spring Championship',
+    description: 'Qualification for international tournaments',
+    format: 'Single Elimination',
     status: 'Registration',
     maxTeams: 32,
     registeredTeams: 18,
@@ -32,9 +32,9 @@ const mockTournaments = [
   },
   {
     tournamentId: 't3',
-    name: 'Азийн Про Лиг',
-    description: 'Азийн багуудын дээд түвшин',
-    format: 'Бүх Багттай Тоглоом',
+    name: 'Asian Pro League',
+    description: 'Top tier for Asian teams',
+    format: 'Round Robin',
     status: 'Upcoming',
     maxTeams: 8,
     registeredTeams: 6,
@@ -82,10 +82,10 @@ export default function Tournaments() {
         <div>
           <h1 className="font-orbitron text-3xl font-bold">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-yellow to-cyber-orange">
-              🏆 ТЭМЦЭЭНҮҮД
+              🏆 TOURNAMENTS
             </span>
           </h1>
-          <p className="text-gray-400 mt-2">Профессонал esports тэмцээнүүдэд оролцоорой</p>
+          <p className="text-gray-400 mt-2">Compete in professional esports tournaments</p>
         </div>
 
         <div className="flex gap-2">
@@ -99,7 +99,7 @@ export default function Tournaments() {
                   : 'bg-[#0f0f1a] text-gray-400 hover:text-white'
               }`}
             >
-              {status === 'all' ? 'Бүгд' : status === 'Live' ? 'Идэвхтэй' : status === 'Registration' ? 'Бүртгэл' : 'Удахгүй'}
+              {status === 'all' ? 'All' : status === 'Live' ? 'Live' : status === 'Registration' ? 'Registration' : 'Upcoming'}
             </button>
           ))}
         </div>

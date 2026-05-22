@@ -127,21 +127,15 @@ export const useNotificationStore = create<NotificationState>((set) => ({
 }));
 
 export const RANK_TIERS = {
-  WARRIOR: { name: 'Warrior', color: '#8B5CF6', icon: '⚔️' },
-  ELITE: { name: 'Elite', color: '#3B82F6', icon: '🛡️' },
-  MASTER: { name: 'Master', color: '#06B6D4', icon: '⭐' },
-  GRANDMASTER: { name: 'Grandmaster', color: '#F59E0B', icon: '🌟' },
-  EPIC: { name: 'Epic', color: '#EF4444', icon: '💎' },
-  LEGEND: { name: 'Legend', color: '#EC4899', icon: '👑' },
-  MYTHIC: { name: 'Mythic', color: '#F97316', icon: '🔥' },
-  MYTHIC_GLORY: { name: 'Mythical Glory', color: '#DC2626', icon: '🏆' },
-  MYTHICAL_HONOR: { name: 'Mythical Honor', color: '#7C3AED', icon: '⚡' },
-  MYTHICAL_SOVEREIGN: { name: 'Mythical Sovereign', color: '#FFD700', icon: '👑' },
-  ASCENDANT: { name: 'Ascendant', color: '#FF006E', icon: '🚀' },
-  GUARDIAN: { name: 'Guardian', color: '#00D4FF', icon: '🛡️' },
-  CHAMPION: { name: 'Champion', color: '#8338EC', icon: '🎖️' },
-  LEGENDARY: { name: 'Legendary', color: '#FF4D4D', icon: '💫' },
-  IMMORTAL: { name: 'Immortal', color: '#FF0000', icon: '🌟' },
-  TITAN: { name: 'Titan', color: '#00FFFF', icon: '⚡' },
-  CELESTIAL: { name: 'Celestial', color: '#FFD700', icon: '✨' },
+  WARRIOR: { name: 'Warrior', color: '#6B7280', icon: '⚔️', order: 1 },
+  ELITE: { name: 'Elite', color: '#3B82F6', icon: '🛡️', order: 2 },
+  MASTER: { name: 'Master', color: '#06B6D4', icon: '⭐', order: 3 },
+  GRANDMASTER: { name: 'Grandmaster', color: '#F59E0B', icon: '🌟', order: 4 },
+  EPIC: { name: 'Epic', color: '#EF4444', icon: '💎', order: 5 },
+  LEGEND: { name: 'Legend', color: '#EC4899', icon: '👑', order: 6 },
+  MYTHIC: { name: 'Mythic', color: '#F97316', icon: '🔥', order: 7 },
+  MYTHICAL_HONOR: { name: 'Mythical Honor', color: '#7C3AED', icon: '⚡', order: 8 },
+  MYTHICAL_GLORY: { name: 'Mythical Glory', color: '#DC2626', icon: '🏆', order: 9 },
 } as const;
+
+export const RANK_ORDER = Object.keys(RANK_TIERS);

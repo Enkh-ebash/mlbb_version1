@@ -14,7 +14,7 @@ export default function Login() {
     username: '',
     email: '',
     password: '',
-    country: 'Монгол Улс',
+    country: 'Mongolia',
     region: 'Southeast Asia'
   });
 
@@ -31,7 +31,7 @@ export default function Login() {
       }
       window.location.href = '/';
     } catch (error) {
-      alert(isLogin ? 'Нэвтрэх нэр эсвэл нууц үг буруу байна' : 'Бүртгэл амжилтгүй боллоо');
+      alert(isLogin ? 'Invalid username or password' : 'Registration failed');
     }
     setLoading(false);
   };
@@ -47,12 +47,12 @@ export default function Login() {
           <h1 className="font-orbitron text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyber-purple via-cyber-cyan to-cyber-pink">
             🎮 MLBB ESPORTS
           </h1>
-          <p className="text-gray-400 mt-2">Профессонал Мобайл Легендс тамирчин</p>
+          <p className="text-gray-400 mt-2">Professional Mobile Legends Player</p>
         </div>
 
         <div className="cyber-card p-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            {isLogin ? 'НЭВТРЭХ' : 'БҮРТГҮҮЛЭХ'}
+            {isLogin ? 'SIGN IN' : 'REGISTER'}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,7 +73,7 @@ export default function Login() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Хэрэглэгчийн нэр</label>
+                  <label className="block text-sm text-gray-400 mb-1">Username</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     <input
@@ -81,7 +81,7 @@ export default function Login() {
                       value={formData.username}
                       onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                       className="cyber-input pl-10"
-                      placeholder="Тамирчин"
+                      placeholder="Player"
                       required
                     />
                   </div>
@@ -89,7 +89,7 @@ export default function Login() {
               </>
             )}
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Имэйл</label>
+              <label className="block text-sm text-gray-400 mb-1">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                 <input
@@ -103,7 +103,7 @@ export default function Login() {
               </div>
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Нууц үг</label>
+              <label className="block text-sm text-gray-400 mb-1">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                 <input
@@ -136,7 +136,7 @@ export default function Login() {
               ) : (
                 <>
                   <LogIn size={20} />
-                  {isLogin ? 'НЭВТРЭХ' : 'БҮРТГҮҮЛЭХ'}
+                  {isLogin ? 'SIGN IN' : 'REGISTER'}
                 </>
               )}
             </motion.button>
@@ -147,7 +147,7 @@ export default function Login() {
               onClick={() => setIsLogin(!isLogin)}
               className="text-sm text-cyber-purple hover:underline"
             >
-              {isLogin ? 'Бүртгэлгүй юу? Бүртгүүлэх' : 'Бүртгэлтэй юу? Нэвтрэх'}
+              {isLogin ? "Don't have an account? Register" : 'Already have an account? Sign In'}
             </button>
           </div>
         </div>

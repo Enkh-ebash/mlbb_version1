@@ -5,10 +5,10 @@ import { Users, Trophy, Search, Plus, Star, Crown, Swords } from 'lucide-react';
 
 
 const mockClans = [
-  { clanId: 'c1', name: '凤凰崛起', tag: 'PHX', leaderName: 'ShadowStrike', members: [{ odyseeId: '1', username: 'ShadowStrike', role: 'Leader' }, { odyseeId: '2', username: 'IceQueen', role: 'Officer' }], memberCount: 28, averageMMR: 8450, wins: 156, losses: 44, region: 'Global', description: 'Элит competitive gaming community' },
-  { clanId: 'c2', name: '龙之杀手', tag: 'DRG', leaderName: 'BlazeFury', members: [{ odyseeId: '3', username: 'BlazeFury', role: 'Leader' }], memberCount: 25, averageMMR: 7820, wins: 134, losses: 51, region: 'Americas', description: 'Легендууд энд мэндлэдэг' },
-  { clanId: 'c3', name: 'Сүүдрийн легион', tag: 'SHD', leaderName: 'NightRaven', members: [{ odyseeId: '4', username: 'NightRaven', role: 'Leader' }], memberCount: 30, averageMMR: 8150, wins: 178, losses: 62, region: 'Europe', description: 'Сүүдрээс дайрлан' },
-  { clanId: 'c4', name: 'Өндөрлөг Гишүүд', tag: 'THK', leaderName: 'StormBreaker', members: [{ odyseeId: '5', username: 'StormBreaker', role: 'Leader' }], memberCount: 22, averageMMR: 7340, wins: 112, losses: 38, region: 'Asia', description: 'Түүхэн мэт хурдан, найрсаг мэт аюултай' },
+  { clanId: 'c1', name: 'Phoenix Rising', tag: 'PHX', leaderName: 'ShadowStrike', members: [{ odyseeId: '1', username: 'ShadowStrike', role: 'Leader' }, { odyseeId: '2', username: 'IceQueen', role: 'Officer' }], memberCount: 28, averageMMR: 8450, wins: 156, losses: 44, region: 'Global', description: 'Elite competitive gaming community' },
+  { clanId: 'c2', name: 'Dragon Killers', tag: 'DRG', leaderName: 'BlazeFury', members: [{ odyseeId: '3', username: 'BlazeFury', role: 'Leader' }], memberCount: 25, averageMMR: 7820, wins: 134, losses: 51, region: 'Americas', description: 'Legends are born here' },
+  { clanId: 'c3', name: 'Shadow Legion', tag: 'SHD', leaderName: 'NightRaven', members: [{ odyseeId: '4', username: 'NightRaven', role: 'Leader' }], memberCount: 30, averageMMR: 8150, wins: 178, losses: 62, region: 'Europe', description: 'Striking from the shadows' },
+  { clanId: 'c4', name: 'Highland Warriors', tag: 'THK', leaderName: 'StormBreaker', members: [{ odyseeId: '5', username: 'StormBreaker', role: 'Leader' }], memberCount: 22, averageMMR: 7340, wins: 112, losses: 38, region: 'Asia', description: 'Swift as legend, dangerous as storm' },
 ];
 
 export default function Clans() {
@@ -32,10 +32,10 @@ export default function Clans() {
         <div>
           <h1 className="font-orbitron text-3xl font-bold">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-purple to-cyber-pink">
-              ⚔️ КЛАНУУД
+              ⚔️ CLANS
             </span>
           </h1>
-          <p className="text-gray-400 mt-2">Багт нэгдээд esports-тэй хамтдаа уралдаарай</p>
+          <p className="text-gray-400 mt-2">Join a team and compete together in esports</p>
         </div>
 
         <div className="flex items-center gap-4">
@@ -43,7 +43,7 @@ export default function Clans() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
             <input
               type="text"
-              placeholder="Клан хайх..."
+              placeholder="Search clans..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="cyber-input pl-10 w-64"
@@ -51,7 +51,7 @@ export default function Clans() {
           </div>
           <button className="cyber-button flex items-center gap-2" type="button">
             <Plus size={20} />
-            Клан Үүсгэх
+            Create Clan
           </button>
         </div>
       </motion.div>
