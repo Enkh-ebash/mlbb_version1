@@ -127,15 +127,15 @@ export const useNotificationStore = create<NotificationState>((set) => ({
 }));
 
 export const RANK_TIERS = {
-  WARRIOR: { name: 'Warrior', color: '#6B7280', icon: '⚔️', order: 1 },
-  ELITE: { name: 'Elite', color: '#3B82F6', icon: '🛡️', order: 2 },
-  MASTER: { name: 'Master', color: '#06B6D4', icon: '⭐', order: 3 },
-  GRANDMASTER: { name: 'Grandmaster', color: '#F59E0B', icon: '🌟', order: 4 },
-  EPIC: { name: 'Epic', color: '#EF4444', icon: '💎', order: 5 },
-  LEGEND: { name: 'Legend', color: '#EC4899', icon: '👑', order: 6 },
-  MYTHIC: { name: 'Mythic', color: '#F97316', icon: '🔥', order: 7 },
-  MYTHICAL_HONOR: { name: 'Mythical Honor', color: '#7C3AED', icon: '⚡', order: 8 },
-  MYTHICAL_GLORY: { name: 'Mythical Glory', color: '#DC2626', icon: '🏆', order: 9 },
+  WARRIOR: { name: 'Warrior', color: '#CD7F32', icon: '/img/rank-icons/warrior.svg', order: 1 },
+  ELITE: { name: 'Elite', color: '#3A86FF', icon: '/img/rank-icons/elite.svg', order: 2 },
+  MASTER: { name: 'Master', color: '#9D4EDD', icon: '/img/rank-icons/master.svg', order: 3 },
+  GRANDMASTER: { name: 'Grandmaster', color: '#F72585', icon: '/img/rank-icons/grandmaster.svg', order: 4 },
+  EPIC: { name: 'Epic', color: '#7B2CBF', icon: '/img/rank-icons/epic.svg', order: 5 },
+  LEGEND: { name: 'Legend', color: '#FFB703', icon: '/img/rank-icons/legend.svg', order: 6 },
+  MYTHIC: { name: 'Mythic', color: '#00B4D8', icon: '/img/rank-icons/mythic.svg', order: 7 },
+  MYTHICAL_HONOR: { name: 'Mythical Honor', color: '#7C3AED', icon: '/img/rank-icons/mythical_honor.svg', order: 8 },
+  MYTHICAL_GLORY: { name: 'Mythical Glory', color: '#FFD60A', icon: '/img/rank-icons/mythical_glory.svg', order: 9 },
 } as const;
 
 export const RANK_ORDER = Object.keys(RANK_TIERS);

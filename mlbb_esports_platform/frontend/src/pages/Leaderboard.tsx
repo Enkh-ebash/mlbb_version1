@@ -246,7 +246,8 @@ export default function Leaderboard() {
                     </td>
                     <td className="px-6 py-4">
                       <motion.span whileHover={{ scale: 1.05 }} className="rank-badge" style={{ backgroundColor: `${RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.color}20`, color: RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.color }}>
-                        {RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.icon} {RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.name}
+                        <img src={RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.icon} alt="" className="w-5 h-5 inline-block mr-1" style={{ filter: 'brightness(0) invert(1)' }} />
+                        {RANK_TIERS[entry.rankTier as keyof typeof RANK_TIERS]?.name}
                       </motion.span>
                     </td>
                     <td className="px-6 py-4">

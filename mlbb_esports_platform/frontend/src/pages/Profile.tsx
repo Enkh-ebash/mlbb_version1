@@ -99,7 +99,7 @@ export default function Profile() {
                   <h1 className="text-4xl font-bold text-white">{currentUser.username}</h1>
                   {/* Rank Badge */}
                   <div className="flex items-center gap-2 px-4 py-2 rounded-xl" style={{ backgroundColor: `${tierInfo.color}20`, border: `1px solid ${tierInfo.color}40` }}>
-                    <span className="text-2xl">{tierInfo.icon}</span>
+                    <img src={tierInfo.icon} alt="" className="w-8 h-8" />
                     <div>
                       <p className="font-bold text-sm" style={{ color: tierInfo.color }}>{tierInfo.name}</p>
                       <p className="text-xs text-gray-400">MMR: {currentUser.mmr.toLocaleString()}</p>
@@ -199,7 +199,7 @@ export default function Profile() {
                     background: isPast ? `${info.color}40` : isActive ? `${info.color}30` : '#1a1a2e',
                     ringColor: isActive ? info.color : 'transparent',
                   }}>
-                    <span className="text-2xl">{info.icon}</span>
+                    <img src={info.icon} alt="" className="w-8 h-8" />
                   </div>
                   <span className="text-xs mt-2 font-medium text-center" style={{ color: isPast || isActive ? info.color : '#6b7280' }}>{info.name}</span>
                 </div>

@@ -143,9 +143,7 @@ function Header({ user, onLogout }: { user: any; onLogout: () => void }) {
     <header className="sticky top-0 z-50 bg-[#1a1a2e]/95 backdrop-blur-xl border-b border-[#2d2d44]">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c3aed] to-[#06b6d4] flex items-center justify-center">
-            <span className="text-white text-sm font-bold">M</span>
-          </div>
+          <img src="/img/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
           <span className="font-bold text-lg text-white">MLBB Mongolia</span>
         </Link>
 
